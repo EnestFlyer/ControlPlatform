@@ -455,6 +455,11 @@
               <FileType>1</FileType>
               <FilePath>.\LIB\src\stm32f10x_usart.c</FilePath>
             </File>
+            <File>
+              <FileName>stm32f10x_exti.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\LIB\src\stm32f10x_exti.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -539,6 +544,16 @@
               <FileName>StrToNum.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\SOFTWARE\StrToNum\StrToNum.c</FilePath>
+            </File>
+            <File>
+              <FileName>exti.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\SOFTWARE\EXTI\exti.c</FilePath>
+            </File>
+            <File>
+              <FileName>TEST_INC.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\SOFTWARE\TEST_INC\TEST_INC.h</FilePath>
             </File>
           </Files>
         </Group>

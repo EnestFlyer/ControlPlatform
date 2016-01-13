@@ -5,6 +5,10 @@
 #include "../../SOFTWARE/StrToNum/StrToNum.h"
 #include  "string.h"
 #include "../../SOFTWARE/PlaneAuto/PlaneAuto.h"
+#include "../../SOFTWARE/EXTI/exti.h"
+#include "../../SOFTWARE/TEST_INC/TEST_INC.h"
+
+
 
 
 extern u16 USART_RX3_STA;
@@ -26,7 +30,12 @@ int main(void)
 	USART1_Init(115200);//用于调试
 	USART3_Init(19200);//用于接受远端串口命令
 	MCP41010_Init();
-	
+	{
+	#ifdef __TEST_MODE_
+	TEST_Init();
+	EXTIX_Init();
+	#endif
+	}
 	while(!Plane_LAUNCH()) ;
 	while(1)
 	{
