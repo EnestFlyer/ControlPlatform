@@ -17,7 +17,7 @@
 #define __PITCH 4
 
 /*******************************************************/
-u8 Plane_PID(int X_value,int Y_value);//飞行器自适应，使得物体总是在误差圈内
+u8 Plane_PID(int X_value,int Y_value,int D_val);//飞行器自适应，使得物体总是在误差圈内
 void Plane_UNLOCK(void);
 void Plane_LOCK(void);
 u8 Plane_LAUNCH(void);

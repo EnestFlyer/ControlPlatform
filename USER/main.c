@@ -15,7 +15,7 @@ extern u16 USART_RX3_STA;
 extern u8 Rx3Buf[Rx3Length];
 int X_val=0;//相对于被抓物体的X偏移量
 int Y_val=0;//相对于被抓物体的Y偏移量
-
+int D_val=65526;//距离初始化为无限大
 
 int main(void)
 {
@@ -35,10 +35,9 @@ int main(void)
 		#ifdef __TEST_MODE_
 		EXTIX_Init();
 		TEST_Init();
+		printf1("ok\r\n");
 		#endif
 	}
-	printf1("ok\r\n");
-	while(1);//for test
 	while(!Plane_LAUNCH()) ;//自动起飞模式，起飞成功捕获到目标之后开始自动调节。
 	while(1)
 	{
@@ -52,7 +51,6 @@ int main(void)
 			}
 			flag=1;
 			USART_RX3_STA=0;
-			//printf1("%s\r\n",temp);
 		}
 		
 		if(flag==1)
@@ -62,19 +60,20 @@ int main(void)
 			{
 				printf1("X=%d\r\n",ValueOfMea(temp));//for test
 				X_val=ValueOfMea(temp);
-//				counter++;
+				counter++;
 			}
 			else if(command=='Y')
 			{
 				printf1("Y=%d\r\n",ValueOfMea(temp));//for test
 				Y_val=ValueOfMea(temp);	
-//				counter++;
+				counter++;
 			}
 			
-//			else if(command=='D')//距离太近了就只是偏航而不要去pitch
-//			{
-//				printf1("D=%d\r\n",ValueOfMea(temp));//for test
-//			}
+			else if(command=='D')//距离太近了就只是偏航而不要去pitch
+			{
+				printf1("D=%d\r\n",ValueOfMea(temp));//for test
+				D_val=ValueOfMea(temp);
+			}
 //			else if(command=='S')
 //			{
 //				printf1("S=%d\r\n",ValueOfMea(temp));//for test
@@ -85,7 +84,7 @@ int main(void)
 			
 			if(counter==2)//捕获到X和Y数据时才开始自动调节。
 			{
-				Plane_PID(X_val,Y_val);
+				Plane_PID(X_val,Y_val,D_val);
 				counter=0;
 			}
 		}

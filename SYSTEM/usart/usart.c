@@ -245,7 +245,8 @@ void USART3_IRQHandler(void)                	//串口3中断服务程序
 				}
 			else //还没收到0X0D
 				{	
-				if(Res==0x0d)USART_RX3_STA|=0x4000;
+				if(Res==0x0d)
+					USART_RX3_STA|=0x4000;
 				else
 					{
 					Rx3Buf[USART_RX3_STA&0X3FFF]=Res ;

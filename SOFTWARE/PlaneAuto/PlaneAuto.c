@@ -81,7 +81,7 @@ u8 Plane_LAUNCH()
 
 
 
-u8 Plane_PID(int X_value,int Y_value)
+u8 Plane_PID(int X_value,int Y_value,int D_val)//也要对距离进行pid调控
 {
 	if((X_value<THE_ERR_X)&&(Y_value<THE_ERR_Y))
 	{
