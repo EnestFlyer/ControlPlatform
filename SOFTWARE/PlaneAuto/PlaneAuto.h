@@ -17,13 +17,6 @@
 #define __PITCH 4
 
 /*******************************************************/
-void Plane_Up(long UpSpeed);					//油门，UpSpeed海拔上升速度
-void Plane_Down(long DownSpeed);			//油门，DownSpeed海拔下降速度
-void Plane_Yaw(long YawSpeed);				//偏航，YawSpeed偏航速度 
-void Plane_Roll(long RollSpeed);			//翻滚，RollSpeed翻滚速度/左右走
-void Plane_Pitch(long PitchSpeed);		//俯仰角，PitchSpeed/前后走
-
-
 u8 Plane_PID(int X_value,int Y_value);//飞行器自适应，使得物体总是在误差圈内
 void Plane_UNLOCK(void);
 void Plane_LOCK(void);

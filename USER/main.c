@@ -30,14 +30,16 @@ int main(void)
 	USART1_Init(115200);//用于调试
 	USART3_Init(19200);//用于接受远端串口命令
 	MCP41010_Init();
-
+	printf1("ready\r\n");
 	{
-	#ifdef __TEST_MODE_
-	TEST_Init();
-	EXTIX_Init();
-	#endif
+		#ifdef __TEST_MODE_
+		EXTIX_Init();
+		TEST_Init();
+		#endif
 	}
-	//while(!Plane_LAUNCH()) ;
+	printf1("ok\r\n");
+	while(1);//for test
+	while(!Plane_LAUNCH()) ;//自动起飞模式，起飞成功捕获到目标之后开始自动调节。
 	while(1)
 	{
    if(USART_RX3_STA&0x8000)
@@ -50,7 +52,7 @@ int main(void)
 			}
 			flag=1;
 			USART_RX3_STA=0;
-			printf1("%s\n",temp);
+			//printf1("%s\r\n",temp);
 		}
 		
 		if(flag==1)
@@ -58,31 +60,34 @@ int main(void)
 			command=TempOrPressure(temp);
 			if(command=='X')
 			{
-				//printf1("X=%d\n",ValueOfMea(temp));//for test
+				printf1("X=%d\r\n",ValueOfMea(temp));//for test
 				X_val=ValueOfMea(temp);
-				counter++;
+//				counter++;
 			}
 			else if(command=='Y')
 			{
-				//printf1("Y=%d\n",ValueOfMea(temp));//for test
+				printf1("Y=%d\r\n",ValueOfMea(temp));//for test
 				Y_val=ValueOfMea(temp);	
-				counter++;
+//				counter++;
 			}
-			else if(command=='D')//距离太近了就只是偏航而不要去pitch
-			{
-				printf1("D=%d\n",ValueOfMea(temp));//for test
-			}
-			else if(command=='S')
-			{
-				printf1("S=%d\n",ValueOfMea(temp));//for test
-			}			
+			
+//			else if(command=='D')//距离太近了就只是偏航而不要去pitch
+//			{
+//				printf1("D=%d\r\n",ValueOfMea(temp));//for test
+//			}
+//			else if(command=='S')
+//			{
+//				printf1("S=%d\r\n",ValueOfMea(temp));//for test
+//			}		
+			
 			memset(temp,0,sizeof(u8)*100);
 			flag=0;
-//			if(counter==2)//捕获到X和Y数据时才开始自动调节。
-//			{
-//				Plane_PID(X_val,Y_val);
-//				counter=0;
-//			}
+			
+			if(counter==2)//捕获到X和Y数据时才开始自动调节。
+			{
+				Plane_PID(X_val,Y_val);
+				counter=0;
+			}
 		}
 	}
 	return 1;
