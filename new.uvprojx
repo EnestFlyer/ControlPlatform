@@ -510,11 +510,21 @@
               <FileType>1</FileType>
               <FilePath>.\HARDWARE\MCP41010\MCP41010.c</FilePath>
             </File>
+            <File>
+              <FileName>E17_TTL500.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HARDWARE\E17_TTL500\E17_TTL500.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
           <GroupName>SYSTEM</GroupName>
           <Files>
+            <File>
+              <FileName>usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\SYSTEM\usart\usart.c</FilePath>
+            </File>
             <File>
               <FileName>delay.c</FileName>
               <FileType>1</FileType>
@@ -524,11 +534,6 @@
               <FileName>sys.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\SYSTEM\sys\sys.c</FilePath>
-            </File>
-            <File>
-              <FileName>usart.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\SYSTEM\usart\usart.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -554,6 +559,11 @@
               <FileName>TEST_INC.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\SOFTWARE\TEST_INC\TEST_INC.h</FilePath>
+            </File>
+            <File>
+              <FileName>SelfTest.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\SOFTWARE\SelfTest\SelfTest.c</FilePath>
             </File>
           </Files>
         </Group>

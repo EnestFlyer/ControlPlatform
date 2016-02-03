@@ -3,6 +3,7 @@
 
 #define __TEST_MODE_
 #define __TRANSPARENT_MODE
+#define __PRINT_TEST_MODE
 //#define __COMMAND_MODE
 
 

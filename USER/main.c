@@ -7,7 +7,7 @@
 #include "../../SOFTWARE/PlaneAuto/PlaneAuto.h"
 #include "../../SOFTWARE/EXTI/exti.h"
 #include "../../SOFTWARE/TEST_INC/TEST_INC.h"
-
+#include "../../SOFTWARE/SelfTest/SelfTest.h"
 
 
 
@@ -38,10 +38,13 @@ int main(void)
 		printf1("ok\r\n");
 		#endif
 	}
+	//////////////////////////////以上初始化///////////////////////////////////////////////
+	while(SelfTest()==0);
+	/////////////////////////////以上自检，包括开发环境和数据链/////////////////////////////
 	while(!Plane_LAUNCH()) ;//自动起飞模式，起飞成功捕获到目标之后开始自动调节。
 	while(1)
 	{
-   if(USART_RX3_STA&0x8000)
+		if(USART_RX3_STA&0x8000)
 		{					   
 			len=USART_RX3_STA&0x3fff;//得到此次接收到的数据长度
 			for(t=0;t<len;t++)
@@ -58,20 +61,26 @@ int main(void)
 			command=TempOrPressure(temp);
 			if(command=='X')
 			{
-				printf1("X=%d\r\n",ValueOfMea(temp));//for test
+				#ifdef __PRINT_TEST_MODE
+					printf1("X=%d\r\n",ValueOfMea(temp));//for test
+				#endif
 				X_val=ValueOfMea(temp);
 				counter++;
 			}
 			else if(command=='Y')
 			{
-				printf1("Y=%d\r\n",ValueOfMea(temp));//for test
+				#ifdef __PRINT_TEST_MODE
+					printf1("Y=%d\r\n",ValueOfMea(temp));//for test
+				#endif
 				Y_val=ValueOfMea(temp);	
 				counter++;
 			}
 			
 			else if(command=='D')//距离太近了就只是偏航而不要去pitch
 			{
-				printf1("D=%d\r\n",ValueOfMea(temp));//for test
+				#ifdef __PRINT_TEST_MODE
+					printf1("D=%d\r\n",ValueOfMea(temp));//for test
+				#endif
 				D_val=ValueOfMea(temp);
 			}
 //			else if(command=='S')

@@ -67,7 +67,9 @@ u8 Plane_LAUNCH()
 			command=TempOrPressure(temp);
 			if(command=='S')
 			{
-				printf1("S=%d\n",ValueOfMea(temp));//for test
+				#ifdef __PRINT_TEST_MODE
+					printf1("S=%d\n",ValueOfMea(temp));//for test
+				#endif
 				FlagOfCatch=ValueOfMea(temp);
 			}
 			memset(temp,0,sizeof(u8)*100);
@@ -78,7 +80,6 @@ u8 Plane_LAUNCH()
 	SetChannelValue(__ACCE,1500);
 	return 1;
 }
-
 
 
 u8 Plane_PID(int X_value,int Y_value,int D_val)//也要对距离进行pid调控
