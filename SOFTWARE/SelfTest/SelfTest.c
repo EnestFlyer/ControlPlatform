@@ -5,6 +5,7 @@
 #include "../../SOFTWARE/TEST_INC/TEST_INC.h"
 #include "../../SOFTWARE/StrToNum/StrToNum.h"
 #include "../../HARDWARE/E17_TTL500/E17_TTL500.h"
+#include "string.h"
 
 extern u16 USART_RX3_STA;
 extern u8 Rx3Buf[Rx3Length];
@@ -44,6 +45,9 @@ u8 SelfTest()//成功返回1
 				//将自检信息打印出来
 				break;
 			}
+			
+			memset(temp,0,sizeof(u8)*100);
+			flag=0;
 		}	
 	}
 	
@@ -54,7 +58,7 @@ u8 SelfTest()//成功返回1
 	#ifdef __COMMAND_MODE
 		E17_SendMsg(CMD_S_PARAM,7);
 	#endif
-	
+	flag=0;
 	command='0';
 	while(1)
 	{
@@ -80,6 +84,9 @@ u8 SelfTest()//成功返回1
 					break;
 				}
 			}
+			
+			memset(temp,0,sizeof(u8)*100);
+			flag=0;
 		}
 	}//握手结束，自检完成，开始起飞
 	

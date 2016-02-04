@@ -45,10 +45,7 @@ u8 Plane_LAUNCH()
 	u8 temp[100]={0};//缓冲池
 	char command='O';//命令字
 	
-	SetChannelValue(__ACCE,1600);//缓慢上升
-	delay_ms(1000);delay_ms(1000);
-	SetChannelValue(__YAW,1600);
-	while(!FlagOfCatch)
+	while(1)
 	{
 		if(USART_RX3_STA&0x8000)
 		{					   
@@ -62,24 +59,17 @@ u8 Plane_LAUNCH()
 			USART_RX3_STA=0;
 		}
 		
-		if(flag==1)
-		{
-			command=TempOrPressure(temp);
-			if(command=='S')
-			{
-				#ifdef __PRINT_TEST_MODE
-					printf1("S=%d\n",ValueOfMea(temp));//for test
-				#endif
-				FlagOfCatch=ValueOfMea(temp);
-			}
-			memset(temp,0,sizeof(u8)*100);
-			flag=0;
-		}
+		
+		
+		
+		
 	}
-	SetChannelValue(__PITCH,1600);
-	SetChannelValue(__ACCE,1500);
+
 	return 1;
 }
+
+
+
 
 
 u8 Plane_PID(int X_value,int Y_value,int D_val)//也要对距离进行pid调控
