@@ -4,6 +4,7 @@
 #include "../../SYSTEM/sys/sys.h"
 
 
-u8 SelfTest();
+u8 SelfTest(void);
 
 #endif
+

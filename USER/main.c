@@ -16,7 +16,6 @@ extern u8 Rx3Buf[Rx3Length];
 int X_val=0;//相对于被抓物体的X偏移量
 int Y_val=0;//相对于被抓物体的Y偏移量
 int D_val=65526;//距离初始化为无限大
-
 int main(void)
 {
 	int len=0;
@@ -25,7 +24,6 @@ int main(void)
 	u8 temp[100]={0};//缓冲池
 	char command='O';//命令字
 	u8 counter=0;
-		
 	delay_init(72);
 	USART1_Init(115200);//用于调试
 	USART3_Init(19200);//用于接受远端串口命令
@@ -83,10 +81,6 @@ int main(void)
 				#endif
 				D_val=ValueOfMea(temp);
 			}
-//			else if(command=='S')
-//			{
-//				printf1("S=%d\r\n",ValueOfMea(temp));//for test
-//			}		
 			
 			memset(temp,0,sizeof(u8)*100);
 			flag=0;

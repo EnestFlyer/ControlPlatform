@@ -69,19 +69,34 @@ u8 Plane_LAUNCH()
 }
 
 
-
-
+float CurrentOut_X=0;	//这次输出的值
+float LastOut_X=0;	//上次输出的值
+float Kp_X=0;	//比例系数
+float Ki_X=0;	//积分系数
+float Kd_X=0;	//微分系数
+float ErrCurrent_X=0;	//当次误差
+float ErrLast1_X=0;	//上一次误差
+float ErrLast2_X=0;	//上两次误差
 
 u8 Plane_PID(int X_value,int Y_value,int D_val)//也要对距离进行pid调控
 {
-	if((X_value<THE_ERR_X)&&(Y_value<THE_ERR_Y))
-	{
-		
-	}//在范围圈之内,以小速度收敛
-	else
-	{
-		
-	}//在范围圈之外，以大速度收敛
+	int bias_X=0;
+	float pErr_X=0;
+	float iErr_X=0;
+	float dErr_X=0;
+	
+	ErrCurrent_X=X_value;
+	pErr_X=ErrCurrent_X-ErrLast1_X;//比例误差(等于当前误差减去前一次的误差)
+	iErr_X=ErrCurrent_X;//积分误差(等于当前误差值)
+	dErr_X=ErrCurrent_X-ErrLast1_X*2+ErrLast2_X;//微分误差(等于当前误差减去前一次2倍误差再加上前两次的误差)
+
+	ErrLast2_X=ErrLast1_X;
+	ErrLast1_X=ErrCurrent_X;
+	
+	CurrentOut_X=LastOut_X+Kp_X*pErr_X+Ki_X*iErr_X+Kd_X*dErr_X;
+	LastOut_X=CurrentOut_X;
+	SetChannelValue(__YAW,1500);
 	return 1;
 }
+//暂时只对X进行调控，既是只有yaw
 
