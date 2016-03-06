@@ -9,6 +9,7 @@
 #include "../../SYSTEM/delay/delay.h"
 #include  "string.h"
 #include "../../SOFTWARE/StrToNum/StrToNum.h"
+#include "../../SOFTWARE/EXTI/exti.h"
 
 void Plane_UNLOCK()
 {
@@ -99,4 +100,25 @@ u8 Plane_PID(int X_value,int Y_value,int D_val)//也要对距离进行pid调控
 	return 1;
 }
 //暂时只对X进行调控，既是只有yaw
+
+
+void Plane_Init()
+{
+	//默认是手动模式，但是也要初始化电位器的值
+	ACCE_ORI=ORI_ENABLE;
+	YAW_ORI=ORI_ENABLE;
+	ROLL_ORI=ORI_ENABLE;
+	PITCH_ORI=ORI_ENABLE;
+		
+	ACCE_MCU=MCU_DISABLE;
+	YAW_MCU=MCU_DISABLE;
+	ROLL_MCU=MCU_DISABLE;
+	PITCH_MCU=MCU_DISABLE;
+	
+	SetChannelValue(__ACCE,1500);
+	SetChannelValue(__YAW,1500);
+	SetChannelValue(__PITCH,1500);
+	SetChannelValue(__ROLL,1500);//飞机通道值初始化
+	
+}
 

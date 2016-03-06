@@ -8,8 +8,7 @@
 #include "../../SOFTWARE/EXTI/exti.h"
 #include "../../SOFTWARE/TEST_INC/TEST_INC.h"
 #include "../../SOFTWARE/SelfTest/SelfTest.h"
-
-
+#include "../../HARDWARE/OLED/oled.h"
 
 extern u16 USART_RX3_STA;
 extern u8 Rx3Buf[Rx3Length];
@@ -24,20 +23,31 @@ int main(void)
 	u8 temp[100]={0};//缓冲池
 	char command='O';//命令字
 	u8 counter=0;
+	int testvalue=1000;
+	int x=-64;
 	delay_init(72);
 	USART1_Init(115200);//用于调试
-	USART3_Init(19200);//用于接受远端串口命令
-	MCP41010_Init();
-	printf1("ready\r\n");
-	{
-		#ifdef __TEST_MODE_
-		EXTIX_Init();
-		TEST_Init();
-		printf1("ok\r\n");
-		#endif
-	}
+	USART3_Init(115200);//用于接受远端串口命令
+	MCP41010_Init();//初始化数字电位器
+	EXTIX_Init();//开启外部中断
+	TEST_Init();//测试模式，用于秒切换
+  Plane_Init();
+	ResetOLED();
+	OLED_Init();
+	OLED_ShowString(35,20,"READY",24);
+	OLED_Refresh_Gram();
+	delay_ms(1000);
+	OLED_Clear();
+	OLED_DrawAxes(64,32);
+//	while(1)
+//	{
+//		SetChannelValue(__ACCE,testvalue);
+//		testvalue+=100;
+//		if(testvalue==2000) testvalue=1000;
+//		delay_ms(1000);
+//	}//测试电阻板的测试代码，使用时注释掉。
 	//////////////////////////////以上初始化///////////////////////////////////////////////
-	while(SelfTest()==0);
+	//while(SelfTest()==0);
 	/////////////////////////////以上自检，包括开发环境和数据链/////////////////////////////
 	//while(!Plane_LAUNCH()) ;//自动起飞模式，起飞成功捕获到目标之后开始自动调节。
 	while(1)
@@ -51,6 +61,7 @@ int main(void)
 				while((USART3->SR&0X40)==0);//等待发送结束
 			}
 			flag=1;
+			//printf1("%s\r\n",temp);//调试用
 			USART_RX3_STA=0;
 		}
 		
@@ -59,26 +70,22 @@ int main(void)
 			command=TempOrPressure(temp);
 			if(command=='X')
 			{
-				#ifdef __PRINT_TEST_MODE
-					printf1("X=%d\r\n",ValueOfMea(temp));//for test
-				#endif
+				printf1("X=%d\r\n",ValueOfMea(temp));//for test
+				OLED_ShowTrace(X_val,Y_val);
 				X_val=ValueOfMea(temp);
 				counter++;
 			}
 			else if(command=='Y')
 			{
-				#ifdef __PRINT_TEST_MODE
-					printf1("Y=%d\r\n",ValueOfMea(temp));//for test
-				#endif
+				printf1("Y=%d\r\n",ValueOfMea(temp));//for test
+				OLED_ShowTrace(X_val,Y_val);
 				Y_val=ValueOfMea(temp);	
 				counter++;
 			}
 			
 			else if(command=='D')//距离太近了就只是偏航而不要去pitch
 			{
-				#ifdef __PRINT_TEST_MODE
-					printf1("D=%d\r\n",ValueOfMea(temp));//for test
-				#endif
+				printf1("D=%d\r\n",ValueOfMea(temp));//for test
 				D_val=ValueOfMea(temp);
 			}
 			
@@ -87,7 +94,9 @@ int main(void)
 			
 			if(counter==2)//捕获到X和Y数据时才开始自动调节。
 			{
+				
 				Plane_PID(X_val,Y_val,D_val);
+				OLED_DispTrace(X_val,Y_val);
 				counter=0;
 			}
 		}

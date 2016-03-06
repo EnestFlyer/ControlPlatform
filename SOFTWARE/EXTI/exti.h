@@ -20,10 +20,13 @@
 
 #define ACCE_MCU 				PDout(0)
 #define ACCE_ORI 				PDout(1)
+
 #define YAW_MCU 				PDout(2)
 #define YAW_ORI				  PDout(3)
+
 #define ROLL_MCU 				PDout(4)
 #define ROLL_ORI 				PDout(5)
+
 #define PITCH_MCU 			PDout(6)
 #define PITCH_ORI			  PDout(7)
 //cd4066控制端,高电平导通，低电平截止

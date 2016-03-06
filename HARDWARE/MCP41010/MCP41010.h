@@ -33,10 +33,10 @@
 #define RESISTOR_W_PITCH 0 //抽头电阻
 
 
-#define PROPORTION_ACCE 	0.10989//通道值与电阻值的比值,正比例
-#define PROPORTION_YAW 		0.10946//通道值与电阻值的比值，负相关
-#define PROPORTION_ROLL 	0.10754//通道值与电阻值的比值，负相关
-#define PROPORTION_PITCH 	0.11288//通道值与电阻值的比值,正比例
+#define PROPORTION_ACCE 	0.10989//通道值与电阻值的比值
+#define PROPORTION_YAW 		0.10946//通道值与电阻值的比值
+#define PROPORTION_ROLL 	0.10754//通道值与电阻值的比值
+#define PROPORTION_PITCH 	0.11288//通道值与电阻值的比值
 
 #define BASE_VALUE_ACCE 1031.4
 #define BASE_VALUE_YAW 1031.4
