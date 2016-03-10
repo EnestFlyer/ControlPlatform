@@ -22,14 +22,19 @@ int main(void)
 	int flag=0;//接满标志，置位为接满
 	u8 temp[100]={0};//缓冲池
 	char command='O';//命令字
-	u8 counter=0;
-	int testvalue=1000;
-	int x=-64;
+	//int testvalue=1000;
+	//int x=-64;
+	u8 reg_recv=0;
+	//接受命令寄存器，LSB置位表示接收到X，LSB+1置位表示接收到Y，+2置位
+	//表示接收到D
+	
+	///////////////////////////////////////////////////////////
 	delay_init(72);
 	USART1_Init(115200);//用于调试
 	USART3_Init(115200);//用于接受远端串口命令
 	MCP41010_Init();//初始化数字电位器
 	EXTIX_Init();//开启外部中断
+	PID_Init();//pid参数初始化
 	TEST_Init();//测试模式，用于秒切换
   Plane_Init();
 	ResetOLED();
@@ -41,7 +46,7 @@ int main(void)
 	OLED_DrawAxes(64,32);
 //	while(1)
 //	{
-//		SetChannelValue(__ACCE,testvalue);
+//		SetChannelValue(__YAW,testvalue);
 //		testvalue+=100;
 //		if(testvalue==2000) testvalue=1000;
 //		delay_ms(1000);
@@ -70,36 +75,35 @@ int main(void)
 			command=TempOrPressure(temp);
 			if(command=='X')
 			{
-				printf1("X=%d\r\n",ValueOfMea(temp));//for test
-				OLED_ShowTrace(X_val,Y_val);
 				X_val=ValueOfMea(temp);
-				counter++;
+				printf1("X=%d\r\n",X_val);//for test
+				reg_recv |= 0x01;//表示接收到X
 			}
 			else if(command=='Y')
 			{
-				printf1("Y=%d\r\n",ValueOfMea(temp));//for test
-				OLED_ShowTrace(X_val,Y_val);
-				Y_val=ValueOfMea(temp);	
-				counter++;
+				Y_val=ValueOfMea(temp);
+				printf1("Y=%d\r\n",Y_val);//for test
+				reg_recv |= 0x02;
 			}
-			
 			else if(command=='D')//距离太近了就只是偏航而不要去pitch
 			{
-				printf1("D=%d\r\n",ValueOfMea(temp));//for test
 				D_val=ValueOfMea(temp);
+				printf1("D=%d\r\n",D_val);//for test
+				reg_recv |= 0x04;
 			}
-			
 			memset(temp,0,sizeof(u8)*100);
 			flag=0;
-			
-			if(counter==2)//捕获到X和Y数据时才开始自动调节。
+			if((reg_recv&0x03) == 0x03)//捕获到X和Y数据时才开始自动调节。
 			{
-				
 				Plane_PID(X_val,Y_val,D_val);
-				OLED_DispTrace(X_val,Y_val);
-				counter=0;
+				printf1("ok\r\n");
+				OLED_ShowTrace(X_val,Y_val);
+				reg_recv = 0;
 			}
 		}
+		
+		
+		
 	}
 	return 1;
 }

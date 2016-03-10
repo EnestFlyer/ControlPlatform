@@ -3,6 +3,17 @@
 
 #include "../../SYSTEM/sys/sys.h"
 
+
+typedef struct PID
+{
+	float err_current;
+	float err_last1;
+	float err_last2;
+	float Kp,Ki,Kd;
+	float delta_output;
+	float mid_value;
+}PID;
+
 #define ACCE_PROPORTION 	0		//通道值与上升下降速度的比值
 #define YAW_PROPORTION 		0		//通道值与偏航速度之间的比值
 #define	ROLL_PROPORTION   0		//通道值与翻滚速度的比值
@@ -17,11 +28,12 @@
 #define __PITCH 4
 
 /*******************************************************/
-u8 Plane_PID(int X_value,int Y_value,int D_val);//飞行器自适应，使得物体总是在误差圈内
+u8 Plane_PID(int X_value,int Y_value,int D_value);//飞行器自适应，使得物体总是在误差圈内
 void Plane_UNLOCK(void);
 void Plane_LOCK(void);
 u8 Plane_LAUNCH(void);
 void Plane_Init(void);
+void PID_Init(void);
 
 #endif
 

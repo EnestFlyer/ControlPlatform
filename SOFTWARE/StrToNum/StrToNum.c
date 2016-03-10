@@ -78,11 +78,21 @@ long ValueOfMea(u8 *temp)
 	}
 	NumToString[j]='\0';
 	len=strlen(NumToString);
-  
-	for(i=0,j=len-1;i<len;i++,j--)
-	{
-		value+=(NumToString[j]-48)*powerTen(len-j);
-	}
 	
-	return value/10;
+  if(NumToString[0] != '-')
+	{
+		for(i=0,j=len-1;i<len;i++,j--)
+		{
+			value+=(NumToString[j]-48)*powerTen(len-j);
+		}
+		return value/10;
+	}
+	else if(NumToString[0] == '-')
+	{
+		for(i = 0,j = len-1;i < len-1;i++,j--)
+		{
+			value += (NumToString[j]-48)*powerTen(len-j);
+		}
+		return -value/10;
+	}
 }
